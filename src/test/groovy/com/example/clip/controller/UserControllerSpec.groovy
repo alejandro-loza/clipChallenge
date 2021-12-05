@@ -1,7 +1,11 @@
 package com.example.clip.controller
 
 import com.example.clip.dtos.PaymentDto
+import com.example.clip.dtos.TransactionDto
+import com.example.clip.enums.Status
+import com.example.clip.model.Transaction
 import com.example.clip.repository.PaymentRepository
+import com.example.clip.repository.TransactionRepository
 import com.example.clip.request.PaymentRequest
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
@@ -18,6 +22,9 @@ class UserControllerSpec extends Specification {
 
     @Autowired
     PaymentRepository paymentRepository
+
+    @Autowired
+    TransactionRepository transactionRepository
 
     def "Should get all payments"(){
         given:'a body request'
@@ -52,11 +59,33 @@ class UserControllerSpec extends Specification {
         when:
         def resp = rest.getForEntity("http://localhost:${ port }/api/clip/user/payment", List<PaymentDto>).body
 
-        then:"get all seed data on liquibase file resources/db/changelog/data/payment_data.yaml"
+        then:"get all previous seed data"
         resp.first().with {
             assert it.id
             assert  it.userId == 'user'
             assert  it.amount == 123
+        }
+    }
+
+    def "should get all user disbursement"() {
+        given:
+        Transaction transaction1 = new Transaction()
+        transaction1.with {
+            userId = 'user'
+            amount = 100
+        }
+        transactionRepository.save(transaction1)
+
+        when:
+        List< TransactionDto> resp = rest.getForEntity("http://localhost:${ port }/api/clip/user/disbursement", List< TransactionDto>).body
+
+        then:"All the transactions must be disbursement"
+        resp.first().with {
+            assert it.id
+            assert it.userId == transaction1.userId
+            assert it.amount == transaction1.amount
+            assert it.status == Status.PROCESSED.toString()
+            assert it.disbursement == 96.5
         }
     }
 }

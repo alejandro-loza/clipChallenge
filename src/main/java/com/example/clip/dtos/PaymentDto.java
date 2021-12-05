@@ -19,4 +19,8 @@ public class PaymentDto {
         this.amount = payment.getAmount();
         this.userId = payment.getUserId();
     }
+
+    public PaymentDto() {
+
+    }
 }
