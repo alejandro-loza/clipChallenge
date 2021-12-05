@@ -21,15 +21,20 @@ public class TransactionServiceImp implements TransactionService {
 
     @Override
     public List<TransactionDto> disbursementAll() {
-        List<Transaction> transactions = transactionRepository.findAllByUserIdNotNullAndStatus(Status.NEW);
-        transactions.parallelStream()
-                .forEach((Transaction t)->{
-                    t.processDisbursement();
-                    transactionRepository.save(t);
-                });
-        return transactions.stream()
-                .map(TransactionDto::new)
-                .collect(Collectors.toCollection(ArrayList::new));
+        return  transactionRepository
+                .findAllByUserIdNotNullAndStatus(Status.NEW).parallelStream()
+                    .map(this::disbursement)
+                    .map(this::convertToDto)
+                    .collect(Collectors.toList());
+    }
+
+    private TransactionDto convertToDto(Transaction transaction){
+        return new TransactionDto(transaction);
+    }
+
+    private Transaction disbursement(Transaction transactions) {
+        transactions.processDisbursement();
+        return transactionRepository.save(transactions);
     }
 }
 
