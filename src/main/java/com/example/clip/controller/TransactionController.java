@@ -24,7 +24,7 @@ public class TransactionController {
     PaymentRepository paymentRepository;
 
 
-    @RequestMapping(value = "/createPayload", method = RequestMethod.POST)
+    @RequestMapping(value = "/createPayload", method = RequestMethod.POST)//TODO RESTFULL THIS!!!!!!
     public ResponseEntity create(PaymentRequest paymentRequest) {
 
         Payment payment = new Payment();
