@@ -55,7 +55,7 @@ class UserControllerSpec extends Specification {
         then:"get all seed data on liquibase file resources/db/changelog/data/payment_data.yaml"
         resp.first().with {
             assert it.id
-            assert  it.userId == '666'
+            assert  it.userId == 'user'
             assert  it.amount == 123
         }
     }
