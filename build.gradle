@@ -1,0 +1,45 @@
+plugins {
+	id 'org.springframework.boot' version '2.6.0'
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'groovy'
+}
+
+group = 'com.example.clip'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	annotationProcessor "org.projectlombok:lombok:1.18.16"
+	compileOnly 'org.projectlombok:lombok'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa',
+			'org.springframework.boot:spring-boot-starter-web',
+			'org.springframework.boot:spring-boot-starter-validation:2.4.0',
+			'org.codehaus.groovy:groovy',
+			'javax.inject:javax.inject:1',
+			'org.apache.commons:commons-lang3:3.0'
+
+
+	runtimeOnly 'com.h2database:h2'
+
+	testImplementation 'org.codehaus.groovy:groovy:3.0.6',
+			'org.springframework.boot:spring-boot-starter-test',
+			'org.springframework.boot:spring-boot-starter-webflux',
+			'org.spockframework:spock-core:2.0-M4-groovy-3.0',
+			'org.spockframework:spock-spring:2.0-M4-groovy-3.0',
+			'junit:junit:4.13'
+
+}
+
+test {
+	useJUnitPlatform()
+}
