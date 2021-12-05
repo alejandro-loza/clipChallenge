@@ -1,20 +1,17 @@
 package com.example.clip.controller
 
+import com.example.clip.dtos.PaymentDto
 import com.example.clip.repository.PaymentRepository
 import com.example.clip.request.PaymentRequest
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.http.HttpEntity
-import org.springframework.http.HttpHeaders
-import org.springframework.http.HttpMethod
-import org.springframework.http.HttpStatus
-import org.springframework.http.MediaType
+import org.springframework.http.*
 import org.springframework.web.client.RestTemplate
 import spock.lang.Specification
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class PaymentControllerSpec extends Specification {
+class UserControllerSpec extends Specification {
     @Value('${local.server.port}')
     int port
     RestTemplate rest = new RestTemplate()
@@ -22,7 +19,7 @@ class PaymentControllerSpec extends Specification {
     @Autowired
     PaymentRepository paymentRepository
 
-    def "Should create and log Payload Created Successfully"(){
+    def "Should get all payments"(){
         given:'a body request'
         HttpHeaders headers = new HttpHeaders()
         headers.setContentType(MediaType.APPLICATION_JSON)
@@ -50,6 +47,16 @@ class PaymentControllerSpec extends Specification {
 
     }
 
+    def "should get all user payments"() {
 
+        when:
+        def resp = rest.getForEntity("http://localhost:${ port }/api/clip/user/payment", List<PaymentDto>).body
 
+        then:"get all seed data on liquibase file resources/db/changelog/data/payment_data.yaml"
+        resp.first().with {
+            assert it.id
+            assert  it.userId == '666'
+            assert  it.amount == 123
+        }
+    }
 }

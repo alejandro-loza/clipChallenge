@@ -26,7 +26,8 @@ dependencies {
 			'org.springframework.boot:spring-boot-starter-validation:2.4.0',
 			'org.codehaus.groovy:groovy',
 			'javax.inject:javax.inject:1',
-			'org.apache.commons:commons-lang3:3.0'
+			'org.apache.commons:commons-lang3:3.0',
+			'org.liquibase:liquibase-core'
 
 
 	runtimeOnly 'com.h2database:h2'
