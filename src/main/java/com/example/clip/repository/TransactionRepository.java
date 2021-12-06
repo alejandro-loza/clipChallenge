@@ -10,4 +10,6 @@ import java.util.List;
 @Repository
 public interface TransactionRepository<T extends Payment> extends PaymentRepository<T>{
     List<Transaction> findAllByUserIdNotNullAndStatus(Status status);
+    List<Transaction> findAllByAmountNotNull();
+
 }

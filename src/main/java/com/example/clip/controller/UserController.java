@@ -29,4 +29,9 @@ public class UserController {
         return new ResponseEntity<>( transactionService.disbursementAll(), HttpStatus.OK);
     }
 
+    @GetMapping("/report")
+    ResponseEntity report() {
+        return new ResponseEntity<>( transactionService.report(), HttpStatus.OK);
+    }
+
 }
